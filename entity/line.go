@@ -3,7 +3,7 @@ package entity
 import (
 	"math"
 
-	"github.com/yofu/dxf/format"
+	"github.com/iFREEGROUP/dxf/format"
 )
 
 // Line represents LINE Entity.
@@ -11,6 +11,10 @@ type Line struct {
 	*entity
 	Start []float64 // 10, 20, 30
 	End   []float64 // 11, 21, 31
+	//厚度
+	Thickness float64 //0, 0, 1
+	//拉伸方向
+	StretchingDirection []float64 // 210,220, 230
 }
 
 // IsEntity is for Entity interface.

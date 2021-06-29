@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/yofu/dxf/format"
-	"github.com/yofu/dxf/handle"
+	"github.com/iFREEGROUP/dxf/format"
+	"github.com/iFREEGROUP/dxf/handle"
 )
 
 // Dictionary represents DICTIONARY Object.

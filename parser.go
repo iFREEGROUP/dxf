@@ -6,13 +6,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/yofu/dxf/block"
-	"github.com/yofu/dxf/color"
-	"github.com/yofu/dxf/drawing"
-	"github.com/yofu/dxf/entity"
-	"github.com/yofu/dxf/header"
-	"github.com/yofu/dxf/insunit"
-	"github.com/yofu/dxf/table"
+	"github.com/iFREEGROUP/dxf/block"
+	"github.com/iFREEGROUP/dxf/color"
+	"github.com/iFREEGROUP/dxf/drawing"
+	"github.com/iFREEGROUP/dxf/entity"
+	"github.com/iFREEGROUP/dxf/header"
+	"github.com/iFREEGROUP/dxf/insunit"
+	"github.com/iFREEGROUP/dxf/table"
 )
 
 // setFloat sets a floating point number to a variable using given function.
@@ -583,9 +583,66 @@ func ParseEntityFunc(t string) (func(*drawing.Drawing, [][2]string) (entity.Enti
 		return ParsePoint, nil
 	case "TEXT":
 		return ParseText, nil
+	case "SOLID":
+		return ParseSolid, nil
 	default:
 		return nil, errors.New("unknown entity type")
 	}
+}
+
+//ParseSolid parses SOLID entity
+func ParseSolid(d *drawing.Drawing, data [][2]string) (entity.Entity, error) {
+	s := entity.NewSolid()
+	var err error
+	for _, dt := range data {
+		switch dt[0] {
+		default:
+			continue
+		case "8":
+			layer, err := d.Layer(dt[1], false)
+			if err == nil {
+				s.SetLayer(layer)
+			}
+		case "48":
+			err = setFloat(dt, func(val float64) { s.SetLtscale(val) })
+		case "10":
+			err = setFloat(dt, func(val float64) { s.FirstPoint[0] = val })
+		case "20":
+			err = setFloat(dt, func(val float64) { s.FirstPoint[1] = val })
+		case "30":
+			err = setFloat(dt, func(val float64) { s.FirstPoint[2] = val })
+		case "11":
+			err = setFloat(dt, func(val float64) { s.SecondPoint[0] = val })
+		case "21":
+			err = setFloat(dt, func(val float64) { s.SecondPoint[1] = val })
+		case "31":
+			err = setFloat(dt, func(val float64) { s.SecondPoint[2] = val })
+		case "12":
+			err = setFloat(dt, func(val float64) { s.ThirdPoint[0] = val })
+		case "22":
+			err = setFloat(dt, func(val float64) { s.ThirdPoint[1] = val })
+		case "32":
+			err = setFloat(dt, func(val float64) { s.ThirdPoint[2] = val })
+		case "13":
+			err = setFloat(dt, func(val float64) { s.FourthPoint[0] = val })
+		case "23":
+			err = setFloat(dt, func(val float64) { s.FourthPoint[1] = val })
+		case "33":
+			err = setFloat(dt, func(val float64) { s.FourthPoint[2] = val })
+		case "39":
+			err = setFloat(dt, func(val float64) { s.Thickness = val })
+		case "210":
+			err = setFloat(dt, func(val float64) { s.StretchingDirection[0] = val })
+		case "220":
+			err = setFloat(dt, func(val float64) { s.StretchingDirection[1] = val })
+		case "230":
+			err = setFloat(dt, func(val float64) { s.StretchingDirection[2] = val })
+		}
+		if err != nil {
+			return nil, err
+		}
+	}
+	return s, nil
 }
 
 // ParseLine parses LINE entities.

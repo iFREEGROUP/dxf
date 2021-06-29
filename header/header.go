@@ -2,8 +2,8 @@
 package header
 
 import (
-	"github.com/yofu/dxf/format"
-	"github.com/yofu/dxf/insunit"
+	"github.com/iFREEGROUP/dxf/format"
+	"github.com/iFREEGROUP/dxf/insunit"
 )
 
 // Header contains information written in HEADER section.

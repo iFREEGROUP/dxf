@@ -1,9 +1,9 @@
 package table
 
 import (
-	"github.com/yofu/dxf/color"
-	"github.com/yofu/dxf/format"
-	"github.com/yofu/dxf/handle"
+	"github.com/iFREEGROUP/dxf/color"
+	"github.com/iFREEGROUP/dxf/format"
+	"github.com/iFREEGROUP/dxf/handle"
 )
 
 // Default layers.
